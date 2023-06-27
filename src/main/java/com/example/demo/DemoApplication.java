@@ -44,6 +44,10 @@ class AdditionController {
 class SearchService {
 
     public List<AdditionObject> searchByAdditive(int additive, boolean increasing) {
+        if(additive < 0 || additive > 100){
+            throw new IllegalArgumentException("Sisestatud väärtus peab olema vahemikus 0-100!");
+        }
+
         synchronized (DemoApplication.getCalculations()) {
             List<AdditionObject> results = DemoApplication.getCalculations().stream()
                     .filter(calculation ->
@@ -68,8 +72,7 @@ class AdditionService {
 
     public AdditionObject performCalculation(int num1, int num2) {
         if (num1 < 0 || num2 < 0 || num1 > 100 || num2 > 100) {
-            System.out.println("Sisesta väärtused vahemikus 0-100!");
-            return null;
+            throw new IllegalArgumentException("Sisestatud väärtus peab olema vahemikus 0-100!");
         } else {
             int sum = num1 + num2;
             AdditionObject result = new AdditionObject(num1, num2, sum);
@@ -95,11 +98,9 @@ class AdditionObject {
         return num1;
     }
 
-
     public int getNum2() {
         return num2;
     }
-
 
     public int getSum() {
         return sum;
@@ -127,5 +128,4 @@ public class DemoApplication {
             calculations.add(calculation);
         }
     }
-
 }
